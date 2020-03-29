@@ -1,7 +1,7 @@
 import httpHandler from './../httpHandler';
 import {
-  API_DUMMY,
-    GET_ALL_CONTENT
+    API_DUMMY, CHANGE_VIEW_TYPE,
+    GET_ALL_CONTENT,
 } from '../constants';
 
 const customData = require('../../content');
@@ -20,5 +20,17 @@ export const getAllContent = (page,dispatch) => {
       })
     })
 };
+
+export const changeViewType = (type,dispatch) => {
+    dispatch(
+        {
+            type : CHANGE_VIEW_TYPE,
+            payload : {
+                "viewType" : type
+            }
+        }
+    )
+}
+
 
 

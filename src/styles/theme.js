@@ -2,8 +2,14 @@
 const Theme = {
     colors: {
         primary: '#00c2c7',
-        statusBarColor:"#00c2c7",
+        statusBarColor:"#f3b944",
+        backgroundColor:"#eeeeee",
+        tileColor:"#FEF4CC",
 
+    },
+    heights: {
+        titleHeightPercentage:0.4,
+        trackerTileHeightPercentage:0.2,
     },
     fonts: {
         regular: 'System',

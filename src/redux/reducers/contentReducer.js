@@ -1,9 +1,11 @@
 import {
-  GET_ALL_CONTENT
+    CHANGE_VIEW_TYPE,
+    GET_ALL_CONTENT,
 } from '../constants';
 
 const initialState = {
-  allContent:null
+  allContent:null,
+    viewType:null
 };
 
 
@@ -17,6 +19,12 @@ const contentReducer = (state = initialState, action) => {
       allContent: [...state.allContent,...action.payload.allContent]
     }
   }
+      case CHANGE_VIEW_TYPE : {
+        return {
+            ...state,
+            viewType : action.payload.viewType
+        }
+      }
   // Default
   default: {
     return state;
