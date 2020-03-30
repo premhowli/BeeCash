@@ -210,8 +210,9 @@ export default class RecycleTestComponent extends React.Component {
                                 <Animated.View style={{
                                     flexDirection: 'row', justifyContent: 'space-between',
                                     height:'100%',
+                                    borderRadius:5,
 
-                                    backgroundColor: nope ? "#f2f2f2" : 'red',
+                                    backgroundColor: nope ? "#f2f2f2" : '#00000022',
                                 }}>
                                     <Text style={{ fontSize: 32 }}>@</Text>
                                 </Animated.View>
