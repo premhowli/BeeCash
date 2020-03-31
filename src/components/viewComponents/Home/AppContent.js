@@ -33,6 +33,7 @@ import { createBottomTabNavigator,createMaterialTopTabNavigator } from 'react-na
 import Basic from '../TrackerView/sortableList'
 import RecycleTestComponent from '../TrackerView/sortable';
 import TrackerCart2 from '../TrackerView/TrakerCartV3';
+import Login from '../User/index';
 
 
 AppRegistry.registerComponent(appName, () => gestureHandlerRootHOC(App));
@@ -56,19 +57,18 @@ const RootStack = createStackNavigator(
                 header: null,
             },
         },
-        // HomeFeed:{
-        //     screen:HomeFeed,
-        //     navigationOptions: {
-        //         header: null,
-        //     },
-        //
-        // },
         Cart:{
             screen:TrackerCart,
             navigationOptions: {
                 header: null,
             },
         },
+        Login:{
+            screen:Login,
+            navigationOptions: {
+                header: null,
+            },
+        }
 
     },
     {
@@ -80,9 +80,36 @@ const RootStack = createStackNavigator(
     }
 );
 
+const CartStack = createStackNavigator(
+    {
+        Track: {
+            screen:TrackerCart2,
+            navigationOptions: {
+                header: null,
+            },
+        },
+        Details:{
+            screen:TrackerCart,
+            navigationOptions: {
+                header: null,
+            },
+        },
+
+    },
+    {
+        initialRouteName: 'Track',
+        headerMode: 'none',
+        defaultNavigationOptions: {
+            ...TransitionPresets.SlideFromRightIOS,
+        },
+    }
+);
+
+
+
 const tabRootStack = createMaterialTopTabNavigator({
         Home: RootStack,
-        Cart : TrackerCart2,
+        Cart : CartStack,
         // Details : RootStack
     },
     {
@@ -95,12 +122,33 @@ const tabRootStack = createMaterialTopTabNavigator({
             ...TransitionPresets.SlideFromRightIOS,
         },
     }
-)
+);
+
+const globalStack = createStackNavigator({
+    Login:{
+        screen:Login,
+        navigationOptions: {
+            header: null,
+        },
+    },
+    Dashboard:{
+        screen:tabRootStack,
+        navigationOptions: {
+            header: null,
+        },
+    }
+},{
+    initialRouteName: 'Login',
+    headerMode: 'none',
+    defaultNavigationOptions: {
+        ...TransitionPresets.SlideFromRightIOS,
+    },
+});
 
 
 
 
-const AppContainer = createAppContainer(tabRootStack);
+const AppContainer = createAppContainer(globalStack);
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -181,48 +229,6 @@ class AppContent extends React.Component {
                 { key: 'second', title: 'banmkl' },
             ],
         };
-        // this.state = {
-        //    content:"Hello",
-        //     page:0,
-        //     url:"https://unsplash.it/400/400?image=1",
-        //     dummt:[
-        //         {
-        //             "id": "",
-        //             "price": "3v00.00",
-        //             "imageUrl": "https://source.unsplash.com/random/200",
-        //             "name": "pukah"
-        //
-        //         },
-        //         {
-        //             "id": "",
-        //             "price": "3f00.00",
-        //             "imageUrl": "https://source.unsplash.com/random/300",
-        //             "name": "pukah"
-        //
-        //         },
-        //         {
-        //             "id": "",
-        //             "price": "3200.00",
-        //             "imageUrl": "https://source.unsplash.com/random/400",
-        //             "name": "pukah"
-        //
-        //         },
-        //         {
-        //             "id": "",
-        //             "price": "3200.00",
-        //             "imageUrl": "https://source.unsplash.com/random/500",
-        //             "name": "pukah"
-        //
-        //         },
-        //         {
-        //             "id": "",
-        //             "price": "3200.00",
-        //             "imageUrl": "https://source.unsplash.com/random",
-        //             "name": "pukah"
-        //
-        //         }
-        //     ]
-        // }
 
         this.screenWidth = Dimensions.get("window").width;
         this.screenHeight = Dimensions.get("window").height;
@@ -340,11 +346,11 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getDummyData:()=>{
             console.log("DP called");
-            contentActions.getAllContent(1,dispatch);
+            //contentActions.getAllContent(1,dispatch);
         },
-        changeViewType:(type)=>{
-            contentActions.changeViewType(type,dispatch);
-        }
+        // changeViewType:(type)=>{
+        //     contentActions.changeViewType(type,dispatch);
+        // }
     };
 };
 

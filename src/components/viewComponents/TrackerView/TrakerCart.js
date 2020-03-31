@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import {View, Text, Dimensions, TouchableOpacity, FlatList} from 'react-native';
+import {View, Text, Dimensions, TouchableOpacity, FlatList, ScrollView} from 'react-native';
+import * as feedActions from '../../../redux/actions/feedActions';
 import * as contentActions from '../../../redux/actions/contentActions';
+
 import { connect } from "react-redux";
 import theme from '../../../styles/theme'
 import {CustomCachedImage} from 'react-native-img-cache';
@@ -54,9 +56,26 @@ export class TrackerCart extends React.Component {
                 { key: 'second', title: 'banmkl' },
             ],
             data: exampleData,
+            eventDetails:null,
         };
         this.screenWidth = Dimensions.get("window").width;
         this.screenHeight = Dimensions.get("window").height;
+
+    }
+
+    componentDidMount(){
+        this.id = this.props.navigation.getParam("id",null);
+        console.log("leh bara = "+this.id);
+        this.props.fetchDetails(this.id);
+    }
+
+
+    static getDerivedStateFromProps(nextProp, prevState) {
+        console.log("<<<< nextProp = "+JSON.stringify(nextProp));
+        return {
+            eventDetails: nextProp.eventDetails !== prevState.eventDetails ? nextProp.eventDetails : prevState.eventDetails,
+            //viewType: nextProp.viewType !== prevState.viewType ? nextProp.viewType : prevState.viewType
+        }
 
     }
 
@@ -162,69 +181,6 @@ export class TrackerCart extends React.Component {
             )
         }
     };
-
-    onSwipeUp(gestureState) {
-        //this.setState({backgroundColor: 'blue'});
-    }
-
-    onSwipeDown(gestureState) {
-        this.setState({myText: 'You swiped down!'});
-    }
-
-    onSwipeLeft(gestureState) {
-        //this.props.navigation.navigate('Cart');
-    }
-
-    onSwipeRight() {
-        console.log("leh bara swipe");
-        this.props.navigation.goBack();
-        // this.setState({myText: 'You swiped right!',
-        //     backgroundColor: 'black'});
-    }
-
-    renderLeftActions = (progress, dragX) => {
-        const trans = dragX.interpolate({
-            inputRange: [0, 50, 100, 101],
-            outputRange: [-20, 0, 0, 1],
-        });
-        console.log("le bhhhhau");
-        //this.props.navigation.goBack();
-        return;
-
-        // return (
-        //     <View style={styles.leftAction} onPress={console.log('Pressed')}>
-        //         <Animated.Text
-        //             style={[
-        //                 styles.actionText,
-        //                 {
-        //                     transform: [{ translateX: trans }],
-        //                 },
-        //             ]}>
-        //             Swiped!!
-        //         </Animated.Text>
-        //     </View>
-        // );
-    };
-
-    onSwipe(gestureName, gestureState) {
-        const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
-        this.setState({gestureName: gestureName});
-        switch (gestureName) {
-            case SWIPE_UP:
-                // this.setState({backgroundColor: 'red'});
-                break;
-            case SWIPE_DOWN:
-                // this.setState({backgroundColor: 'green'});
-                break;
-            case SWIPE_LEFT:
-                // this.setState({backgroundColor: 'blue'});
-                break;
-            case SWIPE_RIGHT:
-                // this.setState({backgroundColor: 'yellow'});
-                break;
-        }
-    }
-
     // this.viewType = this.props.viewType;
     _toggleSortView = () =>{
         this.setState((prevState)=>{
@@ -242,50 +198,127 @@ export class TrackerCart extends React.Component {
             velocityThreshold: 0.1,
             directionalOffsetThreshold: 50
         };
+
+        //console.log("leh "+JSON.stringify(this.state.eventDetails[0]));
+        //console.log("leh "+this.state.eventDetails.length);
+
+
+
+        let eventDetails = null;
+
+        if(this.state.eventDetails && this.state.eventDetails.length>0){
+            eventDetails = this.state.eventDetails[0];
+        }
+
+
+        //this.state.eventDetails[0];
+
+
         return(
             <View style={{alignItems:'center',width:this.screenWidth,flex:1}}>
-                <View
-                    style={{height:50,
-                        width:this.screenWidth,
-                        justifyContent:'center',
-                        backgroundColor:'#cccccc'}}
-                >
-                <TouchableOpacity
-                    onPress={()=>{
-                        this._toggleSortView();
-                    }}
-                    >
-                    <MaterialCommunityIcons name={'reorder-horizontal'} size={40}/>
-                </TouchableOpacity>
-                </View>
-                <View style={{height:this.screenHeight-50}}>
-                    { this.state.showSortableView?
-                        <DraggableFlatList
-                            style={{paddingTop:10,
-                                backgroundColor:theme.colors.backgroundColor,
-                                width:this.screenWidth}}
-                            contentContainerStyle={{}}
-                            data={this.state.data}
-                            scrollPercent={5}
-                            renderItem={this.renderItem}
-                            keyExtractor={(item, index) => `draggable-item-${item.key}`}
-                            //onMoveEnd={({ data }) => this.setState({ data })}
-                            onDragEnd={({ data }) => this.setState({ data })}
-                        />
-                        :
+                {/*<View*/}
+                    {/*style={{height:50,*/}
+                        {/*width:this.screenWidth,*/}
+                        {/*justifyContent:'center'*/}
+                        {/*}}*/}
+                {/*>*/}
+                {/*<TouchableOpacity*/}
+                    {/*onPress={()=>{*/}
+                        {/*this._toggleSortView();*/}
+                    {/*}}*/}
+                    {/*>*/}
+                    {/*/!*<MaterialCommunityIcons name={'reorder-horizontal'} size={40}/>*!/*/}
+                {/*</TouchableOpacity>*/}
+                {/*</View>*/}
+                <ScrollView style={{height:this.screenHeight,width:this.screenWidth}}>
+                    { eventDetails ?
+                        <View style={{alignItems:'center'}}>
+
+                            <CustomCachedImage
+                                component={Image}
+                                source={{ uri: eventDetails.imageUrl }}
+                                // indicator={}
+                                imageStyle={{
+                                    //borderRadius:5
+                                }}
+                                style={
+                                    {
+                                        height:this.screenHeight*0.3,
+
+                                        width:this.screenWidth,
+                                        //borderTopRightRadius:5
+                                    }
+                                }>
+                                <TouchableOpacity
+                                    style={{position:'absolute',
+                                    top:10,
+                                    left:10,
+                                    width:30,height:30}}
+                                    onPress={()=>{
+                                        this.props.navigation.goBack();
+                                    }
+                                    }
+
+                                >
+                                    <MaterialCommunityIcons name={'arrow-left'} size={30} color={'#ffffff'}/>
+                                </TouchableOpacity>
+                            </CustomCachedImage>
+                            <View style={{width:"100%",
+                                height:60,
+                                paddingHorizontal:10,
+                                alignItems:"flex-start",
+                                justifyContent:'flex-end'}}>
+                                <Text style={{fontWeight:'bold',fontSize:30}}>{eventDetails.name}</Text>
+
+                            </View>
+                            <View style={{width:"100%",
+                                height:30,
+                                paddingHorizontal:10,
+                                alignItems:"flex-start",
+                                justifyContent:'flex-start'}}>
+                                <Text style={{fontWeight:'bold',fontSize:10}}>{eventDetails.location}</Text>
+
+                            </View>
+
+                            <View style={{width:"100%",
+                                height:this.screenHeight*0.3,
+                                marginTop:10,
+                                paddingHorizontal:10,
+                                alignItems:"flex-start",
+
+
+                            }}>
+                                <Text style={{fontWeight:'bold',fontSize:10}}>{eventDetails.location}</Text>
+
+                            </View>
+                            <View style={{width:this.screenWidth,alignItems:'center'}}>
+                                <TouchableOpacity style={{height:45,
+                                    width:this.screenWidth*0.7,
+                                    borderRadius:22.5,
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    backgroundColor:theme.colors.statusBarColor}}
+                                    onPress={()=>{
+                                        this.props.addItemToTracker(eventDetails);
+                                        this.props.navigation.navigate("Track");
+                                    }
+                                    }
+
+                                >
+                                    <Text style={{fontSize:25,color:'#ffffff'}}>{eventDetails.isPaid?"Buy Now":"Track"}</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={{}}>
+
+                            </View>
+                        </View>:
                         <View>
-                        <FlatList
-                            style={{marginTop:10,
-                                paddingBottom:200,
-                                backgroundColor:theme.colors.backgroundColor,
-                                width:this.screenWidth}}
-                            contentContainerStyle={{alignItems:'center'}}
-                            data={this.state.FlatListItems}
-                            renderItem={this.renderItem}
-                        />
+                            <Text>meme lelo</Text>
                         </View>
+
                     }
-                </View>
+                </ScrollView>
             </View>
         )
     }
@@ -294,8 +327,9 @@ export class TrackerCart extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        content:state.contentReducer.allContent,
-        viewType : state.contentReducer.viewType,
+        // content:state.contentReducer.allContent,
+        // viewType : state.contentReducer.viewType,
+        eventDetails: state.feedReducer.eventDetails,
     };
 };
 
@@ -305,7 +339,13 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getDummyData:()=>{
             console.log("DP called");
-            contentActions.getAllContent(1,dispatch);
+            //contentActions.getAllContent(1,dispatch);
+        },
+        fetchDetails:(id)=>{
+            feedActions.fetchEventDetails(id,dispatch)
+        },
+        addItemToTracker:(item)=>{
+            contentActions.addItemToTracker(item,dispatch)
         }
     };
 };

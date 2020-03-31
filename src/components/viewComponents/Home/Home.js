@@ -6,6 +6,24 @@ import {HomeFeed} from '../HomeFeed/HomeFeed';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import * as contentActions from '../../../redux/actions/contentActions';
 import theme from '../../../styles/theme';
+import * as feedActions from '../../../redux/actions/feedActions';
+import {CustomCachedImage} from 'react-native-img-cache';
+import Image from 'react-native-image-progress';
+
+
+
+
+
+class CellContainer extends React.Component {
+    constructor(args) {
+        super(args);
+    }
+    render() {
+        return <View {...this.props}>
+            {this.props.children}
+        </View>;
+    }
+}
 
 
 class Home extends Component{
@@ -33,6 +51,7 @@ class Home extends Component{
                 {name:'Dostoyevsky'}
             ],
             showList:true,
+            allEvent:null,
 
             index: 0,
             routes: [
@@ -47,21 +66,14 @@ class Home extends Component{
 
     }
 
-    onSwipeUp(gestureState) {
-        //this.setState({backgroundColor: 'blue'});
-    }
 
-    onSwipeDown(gestureState) {
-        this.setState({myText: 'You swiped down!'});
-    }
+    static getDerivedStateFromProps(nextProp, prevState) {
+        console.log("<<<< nextProp = "+JSON.stringify(nextProp));
+        return {
+            allEvent: nextProp.allEvent !== prevState.allEvent ? nextProp.allEvent : prevState.allEvent,
+            viewType: nextProp.viewType !== prevState.viewType ? nextProp.viewType : prevState.viewType
+        }
 
-    onSwipeLeft(gestureState) {
-        //this.props.navigation.navigate('Cart');
-    }
-
-    onSwipeRight(gestureState) {
-        // this.setState({myText: 'You swiped right!',
-        //     backgroundColor: 'black'});
     }
 
     onSwipe(gestureName, gestureState) {
@@ -82,6 +94,77 @@ class Home extends Component{
                 break;
         }
     }
+
+
+    _renderRows = ({item, index, separators})=>{
+
+        if(this.state.showList){
+            return(
+                <CellContainer>
+                    <TouchableOpacity style={{
+                        justifyContent:'center',
+                        alignItems:'center',
+                        marginBottom:10,
+                        height:this.screenHeight*theme.heights.titleHeightPercentage,
+                        width:this.screenWidth*0.95,
+                        borderRadius:5,
+                        elevation:5,
+                        backgroundColor:theme.colors.tileColor}}
+
+                                      onPress={()=>{
+                                          this.props.navigation.navigate('Cart',{
+                                              id : item.id
+
+                                          })
+                                      }}
+                    >
+                        <View style={{flex:3,backgroundColor:theme.colors.statusBarColor,borderTopRightRadius:5,borderTopLeftRadius:5}}>
+                            <CustomCachedImage
+                                component={Image}
+                                source={{ uri: item.imageUrl }}
+                                // indicator={}
+                                imageStyle={{
+                                    borderRadius:5
+                                }}
+                                style={
+                                    {
+                                        height:this.screenHeight*theme.heights.titleHeightPercentage*(3/5),width:this.screenWidth*0.95,
+                                        borderTopRightRadius:5
+                                    }
+                                }/>
+                        </View>
+                        <View style={{flex:2,
+                            width:'100%',
+                            borderBottomLeftRadius:5,
+                            borderBottomRightRadius:5,
+
+                        }}>
+                            <View style={{padding:10}}>
+                                <Text style={{color:'#000068',fontWeight: 'bold'}}>
+                                    {item.name}
+                                </Text>
+                                <Text style={{color:'#323028'}}>
+                                    {item.location}
+                                </Text>
+                            </View>
+                        </View>
+
+                    </TouchableOpacity>
+                </CellContainer>
+            )
+        }
+        else{
+            return(
+                <View style={{justifyContent:'center',marginBottom:10}}>
+                    <Text style={{backgroundColor:'green',color:'white',padding:10,width:Dimensions.get('window').width}}>
+                        {item.name}
+                    </Text>
+                </View>
+            )
+        }
+    };
+
+
     _changeViewState = () => {
         if(this.state.showList){
             this.props.changeViewType("grid");
@@ -104,11 +187,11 @@ class Home extends Component{
             velocityThreshold: 0.1,
             directionalOffsetThreshold: 50
         };
-        setTimeout(()=>{
-            //this.props.navigation.navigate('Cart');
-        },5000);
+        // setTimeout(()=>{
+        //     //this.props.navigation.navigate('Cart');
+        // },5000);
         return(
-            <View style={{flex:1,backgroundColor:'red'}}>
+            <View style={{flex:1}}>
 
                 <View style={{height:50,backgroundColor:theme.colors.statusBarColor, justifyContent:'center',paddingHorizontal:10}}>
                     <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:'center'}}>
@@ -146,23 +229,34 @@ class Home extends Component{
                 <View style={{height:this.screenHeight-50}}>
                     {
                         this.state.showList ?
-                            <GestureRecognizer
-                                // onSwipe={(direction, state) => this.onSwipe(direction, state)}
-                                // onSwipeUp={(state) => this.onSwipeUp(state)}
-                                // onSwipeDown={(state) => this.onSwipeDown(state)}
-                                // onSwipeLeft={(state) => this.onSwipeLeft(state)}
-                                // onSwipeRight={(state) => this.onSwipeRight(state)}
-                                config={config}
+                            <View
                                 style={{
                                     height:this.screenHeight-50,
                                     backgroundColor: this.state.backgroundColor
                                 }}
                             >
-                                <HomeFeed press={()=>{
-                                    // this.props.navigation.navigate('Cart');
+                                {
+                                    this.state.allEvent?
+                                        <FlatList
+                                            style={{marginTop:10,
+                                                backgroundColor:theme.colors.backgroundColor,
+                                                width:this.screenWidth}}
+                                            contentContainerStyle={{alignItems:'center'}}
+                                            data={this.state.allEvent}
+                                            renderItem={this._renderRows}
+                                            keyExtractor={(item)=>{
+                                                item.id;
+                                            }}
+                                        />
+                                        :
+                                        <View>
+                                            <Text>
+                                                hello
+                                            </Text>
+                                        </View>
                                 }
-                                }navigation={this.props.navigation} viewType={'list'}/>
-                            </GestureRecognizer>
+
+                            </View>
                             :
                             <View style={{height:this.screenHeight-50,width:this.screenWidth,backgroundColor:"red"}}>
                                 <Text>hello</Text>
@@ -184,7 +278,8 @@ class Home extends Component{
 const mapStateToProps = (state) => {
     return {
         content:state.contentReducer.allContent,
-        viewType : state.contentReducer.viewType
+        allEvent:state.feedReducer.allEvent,
+        viewType : state.feedReducer.viewType,
     };
 };
 
@@ -194,10 +289,13 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getDummyData:()=>{
             console.log("DP called");
-            contentActions.getAllContent(1,dispatch);
+            //contentActions.getAllContent(1,dispatch);
         },
         changeViewType:(type)=>{
             contentActions.changeViewType(type,dispatch);
+        },
+        getAllEvent:()=>{
+            feedActions.getAllEvent(dispatch);
         }
     };
 };

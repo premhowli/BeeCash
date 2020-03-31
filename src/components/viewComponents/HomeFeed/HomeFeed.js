@@ -4,6 +4,7 @@ import {View, Text,
     InteractionManager, ActivityIndicator,
     TouchableOpacity, FlatList} from 'react-native';
 import * as contentActions from '../../../redux/actions/contentActions';
+import * as feedActions from '../../../redux/actions/feedActions'
 import { connect } from "react-redux";
 import theme from '../../../styles/theme'
 import {CustomCachedImage} from 'react-native-img-cache';
@@ -13,9 +14,24 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 
 
-export class HomeFeed extends React.Component {
+
+
+class CellContainer extends React.Component {
     constructor(args) {
         super(args);
+    }
+    render() {
+        return <View {...this.props}>
+            {this.props.children}
+            </View>;
+    }
+}
+
+
+
+export class HomeFeed extends React.Component {
+    constructor(props) {
+        super(props);
 
         let { width } = Dimensions.get("window");
         this.state = {
@@ -55,6 +71,7 @@ export class HomeFeed extends React.Component {
 
     componentDidMount(){
         // 1: Component is mounted off-screen
+        this.props.getAllEvent();
         InteractionManager.runAfterInteractions(() => {
             // 2: Component is done animating
             // 3: Start fetching the team / or render the view
@@ -63,6 +80,16 @@ export class HomeFeed extends React.Component {
                 isReady: true
             })
         });
+        console.log("props = "+JSON.stringify(this.props));
+
+    }
+
+    static getDerivedStateFromProps(nextProp, prevState) {
+        return {
+            allEvent: nextProp.allEvent !== prevState.allEvent ? nextProp.allEvent : prevState.allEvent,
+            viewType: nextProp.viewType !== prevState.viewType ? nextProp.viewType : prevState.viewType
+        }
+
     }
 
     renderRightActions = (progress, dragX) => {
@@ -107,6 +134,7 @@ export class HomeFeed extends React.Component {
 
         if(this.state.showList){
             return(
+                <CellContainer>
                 <TouchableOpacity style={{
                     justifyContent:'center',
                     alignItems:'center',
@@ -124,7 +152,7 @@ export class HomeFeed extends React.Component {
                     <View style={{flex:3,backgroundColor:theme.colors.statusBarColor,borderTopRightRadius:5,borderTopLeftRadius:5}}>
                         <CustomCachedImage
                             component={Image}
-                            source={{ uri: 'https://source.unsplash.com/random/600*500' }}
+                            source={{ uri: item.imageUrl }}
                             // indicator={}
                             imageStyle={{
                                 borderRadius:5
@@ -153,6 +181,7 @@ export class HomeFeed extends React.Component {
                     </View>
 
                 </TouchableOpacity>
+                </CellContainer>
             )
         }
         else{
@@ -166,44 +195,6 @@ export class HomeFeed extends React.Component {
         }
     };
 
-
-    onSwipeUp(gestureState) {
-        //this.setState({backgroundColor: 'blue'});
-    }
-
-    onSwipeDown(gestureState) {
-        this.setState({myText: 'You swiped down!'});
-    }
-
-    onSwipeLeft(gestureState) {
-        //this.props.navigation.navigate('Cart');
-    }
-
-    onSwipeRight(gestureState) {
-        // this.setState({myText: 'You swiped right!',
-        //     backgroundColor: 'black'});
-    }
-
-    onSwipe(gestureName, gestureState) {
-        const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
-        this.setState({gestureName: gestureName});
-        switch (gestureName) {
-            case SWIPE_UP:
-                // this.setState({backgroundColor: 'red'});
-                break;
-            case SWIPE_DOWN:
-                // this.setState({backgroundColor: 'green'});
-                break;
-            case SWIPE_LEFT:
-                // this.setState({backgroundColor: 'blue'});
-                break;
-            case SWIPE_RIGHT:
-                // this.setState({backgroundColor: 'yellow'});
-                break;
-        }
-    }
-
-    // this.viewType = this.props.viewType;
 
 
     render() {
@@ -222,27 +213,37 @@ export class HomeFeed extends React.Component {
         else{
             return(
                 <View style={{alignItems:'center',width:this.screenWidth}}>
-                    <GestureRecognizer
-                        onSwipe={(direction, state) => this.onSwipe(direction, state)}
-                        onSwipeUp={(state) => this.onSwipeUp(state)}
-                        onSwipeDown={(state) => this.onSwipeDown(state)}
-                        onSwipeLeft={(state) => this.onSwipeLeft(state)}
-                        onSwipeRight={(state) => this.onSwipeRight(state)}
-                        config={config}
-                        style={{
-                            height:this.screenHeight-50,
-                            backgroundColor: this.state.backgroundColor
-                        }}
-                    >
-                    <FlatList
-                        style={{marginTop:10,
-                            backgroundColor:theme.colors.backgroundColor,
-                            width:this.screenWidth}}
-                        contentContainerStyle={{alignItems:'center'}}
-                        data={this.state.FlatListItems}
-                        renderItem={this._renderRows}
-                    />
-                    </GestureRecognizer>
+                    {
+                        this.state.allEvent?
+                            <View
+                                style={{
+                                    height:this.screenHeight-50,
+                                    backgroundColor: this.state.backgroundColor
+                                }}
+                            >
+                                <FlatList
+                                    style={{marginTop:10,
+                                        backgroundColor:theme.colors.backgroundColor,
+                                        width:this.screenWidth}}
+                                    contentContainerStyle={{alignItems:'center'}}
+                                    data={this.state.FlatListItems}
+                                    renderItem={this._renderRows}
+                                    keyExtractor={(item)=>{
+                                        item.id;
+                                    }}
+                                />
+                            </View>
+                            :
+                            <View style={{
+                                height:this.screenHeight-50,
+                                backgroundColor: this.state.backgroundColor
+                            }}>
+                                <Text>
+                                    Sorry!! nothiong is available right now!!!
+                                </Text>
+                            </View>
+                    }
+
                 </View>
             )
         }
@@ -258,8 +259,8 @@ export class HomeFeed extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        content:state.contentReducer.allContent,
-        viewType : state.contentReducer.viewType,
+        allEvent:state.feedReducer.allEvent,
+        viewType : state.feedReducer.viewType,
     };
 };
 
@@ -270,6 +271,9 @@ const mapDispatchToProps = (dispatch) => {
         getDummyData:()=>{
             console.log("DP called");
             contentActions.getAllContent(1,dispatch);
+        },
+        getAllEvent:()=>{
+            feedActions.getAllEvent(dispatch);
         }
     };
 };

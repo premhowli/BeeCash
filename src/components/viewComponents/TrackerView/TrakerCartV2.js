@@ -560,7 +560,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getDummyData:()=>{
             console.log("DP called");
-            contentActions.getAllContent(1,dispatch);
+            //contentActions.getAllContent(1,dispatch);
         }
     };
 };
