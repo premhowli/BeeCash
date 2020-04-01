@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Dimensions, FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, FlatList, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { connect } from "react-redux";
 import {HomeFeed} from '../HomeFeed/HomeFeed';
@@ -30,34 +30,9 @@ class Home extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            FlatListItems: [
-                {name:'Patrick star'},
-                {name:'Gallileo'},
-                {name:'Einsten'},
-                {name:'Peterson'},
-                {name:'Schwarzenneger'},
-                {name:'Dostoyevsky'},
-                {name:'Patrick star'},
-                {name:'Gallileo'},
-                {name:'Einsten'},
-                {name:'Peterson'},
-                {name:'Schwarzenneger'},
-                {name:'Dostoyevsky'},
-                {name:'Patrick star'},
-                {name:'Gallileo'},
-                {name:'Einsten'},
-                {name:'Peterson'},
-                {name:'Schwarzenneger'},
-                {name:'Dostoyevsky'}
-            ],
             showList:true,
             allEvent:null,
-
             index: 0,
-            routes: [
-                { key: 'first', title: 'bal' },
-                { key: 'second', title: 'banmkl' },
-            ],
         };
 
 
@@ -68,31 +43,11 @@ class Home extends Component{
 
 
     static getDerivedStateFromProps(nextProp, prevState) {
-        console.log("<<<< nextProp = "+JSON.stringify(nextProp));
         return {
             allEvent: nextProp.allEvent !== prevState.allEvent ? nextProp.allEvent : prevState.allEvent,
             viewType: nextProp.viewType !== prevState.viewType ? nextProp.viewType : prevState.viewType
         }
 
-    }
-
-    onSwipe(gestureName, gestureState) {
-        const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
-        this.setState({gestureName: gestureName});
-        switch (gestureName) {
-            case SWIPE_UP:
-                // this.setState({backgroundColor: 'red'});
-                break;
-            case SWIPE_DOWN:
-                // this.setState({backgroundColor: 'green'});
-                break;
-            case SWIPE_LEFT:
-                // this.setState({backgroundColor: 'blue'});
-                break;
-            case SWIPE_RIGHT:
-                // this.setState({backgroundColor: 'yellow'});
-                break;
-        }
     }
 
 
@@ -313,15 +268,12 @@ class Home extends Component{
             velocityThreshold: 0.1,
             directionalOffsetThreshold: 50
         };
-        // setTimeout(()=>{
-        //     //this.props.navigation.navigate('Cart');
-        // },5000);
         return(
-            <View style={{flex:1}}>
+            <SafeAreaView style={{flex:1}}>
 
                 <View style={{height:50,backgroundColor:theme.colors.statusBarColor, justifyContent:'center',paddingHorizontal:10}}>
                     <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:'center'}}>
-                        <Text style={{fontWeight:"bold"}}>Hello</Text>
+                        <Text style={{fontWeight:"bold"}}>BeeCash</Text>
                         <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:'center'}}>
                             {
                                 this.state.showList && this.state.showList ?
@@ -387,12 +339,7 @@ class Home extends Component{
 
                     }
                 </View>
-
-
-
-
-
-            </View>
+            </SafeAreaView>
         );
     }
 }
@@ -411,8 +358,7 @@ const mapDispatchToProps = (dispatch) => {
 
     return {
         getDummyData:()=>{
-            console.log("DP called");
-            //contentActions.getAllContent(1,dispatch);
+
         },
         changeViewType:(type)=>{
             contentActions.changeViewType(type,dispatch);

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import {View, Text,
+import {
+    View, Text,
     Dimensions,
     InteractionManager, ActivityIndicator,
-    TouchableOpacity, FlatList} from 'react-native';
+    TouchableOpacity, FlatList, SafeAreaView,
+} from 'react-native';
 import * as contentActions from '../../../redux/actions/contentActions';
 import * as feedActions from '../../../redux/actions/feedActions'
 import { connect } from "react-redux";
@@ -35,26 +37,7 @@ export class HomeFeed extends React.Component {
 
         let { width } = Dimensions.get("window");
         this.state = {
-            FlatListItems: [
-                {name:'Patrick star'},
-                {name:'Gallileo'},
-                {name:'Einsten'},
-                {name:'Peterson'},
-                {name:'Schwarzenneger'},
-                {name:'Dostoyevsky'},
-                {name:'Patrick star'},
-                {name:'Gallileo'},
-                {name:'Einsten'},
-                {name:'Peterson'},
-                {name:'Schwarzenneger'},
-                {name:'Dostoyevsky'},
-                {name:'Patrick star'},
-                {name:'Gallileo'},
-                {name:'Einsten'},
-                {name:'Peterson'},
-                {name:'Schwarzenneger'},
-                {name:'Dostoyevsky'}
-            ],
+
             showList:true,
             backgroundColor:"red",
             index: 0,
@@ -91,43 +74,6 @@ export class HomeFeed extends React.Component {
         }
 
     }
-
-    renderRightActions = (progress, dragX) => {
-        const trans = dragX.interpolate({
-            inputRange: [0, 50, 100, 101],
-            outputRange: [-20, 0, 0, 1],
-        });
-
-
-        //this.props.navigation.navigate('Cart')
-
-        // if(parseInt(JSON.stringify(dragX),10)<(-10)){
-        //     this.props.navigation.navigate('Cart')
-        // }
-
-        console.log("le bhhhhau 4 "+JSON.stringify(dragX));
-        return;
-        // this.props.navigation.navigate('Cart')
-        // if(this.props.navigation){
-        //     this.props.navigation.navigate('Cart')
-        // }
-
-
-        // return (
-        //     <View style={styles.leftAction} onPress={console.log('Pressed')}>
-        //         <Animated.Text
-        //             style={[
-        //                 styles.actionText,
-        //                 {
-        //                     transform: [{ translateX: trans }],
-        //                 },
-        //             ]}>
-        //             Swiped!!
-        //         </Animated.Text>
-        //     </View>
-        // );
-    };
-
 
 
     _renderRows = ({item, index, separators})=>{
@@ -198,21 +144,12 @@ export class HomeFeed extends React.Component {
 
 
     render() {
-
-        const config = {
-            velocityThreshold: 0.1,
-            directionalOffsetThreshold: 50
-        }
-
-
-        console.log("<<<<<<<<<<<<<<<"+this.props.press)
-
         if(!this.state.isReady){
             return <ActivityIndicator />
         }
         else{
             return(
-                <View style={{alignItems:'center',width:this.screenWidth}}>
+                <SafeAreaView style={{alignItems:'center',width:this.screenWidth}}>
                     {
                         this.state.allEvent?
                             <View
@@ -244,7 +181,7 @@ export class HomeFeed extends React.Component {
                             </View>
                     }
 
-                </View>
+                </SafeAreaView>
             )
         }
 

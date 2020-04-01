@@ -7,7 +7,7 @@ import {View, Text, Dimensions, TouchableOpacity, TextInput} from 'react-native'
 import * as contentActions from '../../../redux/actions/contentActions';
 
 import { connect } from "react-redux";
-import {TrackerCart} from '../TrackerView/TrakerCart';
+import {TrackerCart} from '../TrackerView/Details';
 import theme from '../../../styles/theme';
 
 class Login extends React.Component {

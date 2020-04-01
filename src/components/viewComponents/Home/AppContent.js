@@ -2,42 +2,22 @@ import React from "react";
 import theme from "../../../styles/theme"
 import * as contentActions from "../../../redux/actions/contentActions";
 import {Text, View,Image,FlatList,ScrollView,TouchableOpacity, Dimensions} from 'react-native';
-import Entypo from "react-native-vector-icons/Entypo"
-import styles from "./styles";
-import {OptimizedFlatList} from 'react-native-optimized-flatlist'
-import FastImage from 'react-native-fast-image'
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import ProgressBar from 'react-native-progress/Bar';
-import {CustomCachedImage, ImageCache} from 'react-native-img-cache';
-import LazyImage from "react-lazy-progressive-image";
-//import ProgressiveImage from 'react-native-progressive-image'
-import ScrollableTabView, { DefaultTabBar }  from "react-native-scrollable-tab-view";
 import { connect } from "react-redux";
-//import { TabView, SceneMap } from 'react-native-tab-view';
-import FlatlistPagination from './Asd';
 import { TabView, SceneMap, TabViewAnimated } from 'react-native-tab-view';
-import Animated from 'react-native-reanimated';
-import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import {AppRegistry} from 'react-native';
 import App from '../../../../App';
 import {name as appName} from '../../../../app';
 import Home from './Home'
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler'
-// import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
-import { Transition } from 'react-native-reanimated';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator, TransitionPresets } from 'react-navigation-stack';
-import TrackerCart from '../TrackerView/TrakerCart';
-import { fromLeft } from 'react-navigation-transitions';
+import TrackerCart from '../TrackerView/Details';
 import { createBottomTabNavigator,createMaterialTopTabNavigator } from 'react-navigation-tabs';
-import Basic from '../TrackerView/sortableList'
-import RecycleTestComponent from '../TrackerView/sortable';
-import TrackerCart2 from '../TrackerView/TrakerCartV3';
+import TrackerCart2 from '../TrackerView/Tracker';
 import Login from '../User/index';
 
 
 AppRegistry.registerComponent(appName, () => gestureHandlerRootHOC(App));
-import Example from '../TrackerView/example'
 
 import HomeFeed from "../HomeFeed/HomeFeed";
 import AntDesign from 'react-native-vector-icons/AntDesign';

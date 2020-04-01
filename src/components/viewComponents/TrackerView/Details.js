@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Dimensions, TouchableOpacity, FlatList, ScrollView} from 'react-native';
+import {View, Text, Dimensions, TouchableOpacity, FlatList, ScrollView, SafeAreaView} from 'react-native';
 import * as feedActions from '../../../redux/actions/feedActions';
 import * as contentActions from '../../../redux/actions/contentActions';
 
@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import theme from '../../../styles/theme'
 import {CustomCachedImage} from 'react-native-img-cache';
 import Image from 'react-native-image-progress';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
@@ -52,7 +51,7 @@ export class TrackerCart extends React.Component {
         }
 
         return(
-            <View style={{alignItems:'center',width:this.screenWidth,flex:1}}>
+            <SafeAreaView style={{alignItems:'center',width:this.screenWidth,flex:1}}>
                 <ScrollView style={{height:this.screenHeight,width:this.screenWidth}}>
                     { eventDetails ?
                         <View style={{alignItems:'center'}}>
@@ -140,7 +139,7 @@ export class TrackerCart extends React.Component {
 
                     }
                 </ScrollView>
-            </View>
+            </SafeAreaView>
         )
     }
 }
