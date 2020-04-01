@@ -7,7 +7,6 @@ import {View, Text, Dimensions, TouchableOpacity, TextInput} from 'react-native'
 import * as contentActions from '../../../redux/actions/contentActions';
 
 import { connect } from "react-redux";
-import {TrackerCart} from '../TrackerView/Details';
 import theme from '../../../styles/theme';
 
 class Login extends React.Component {
@@ -41,8 +40,14 @@ class Login extends React.Component {
                         backgroundColor:theme.colors.statusBarColor,
                         alignItems:'center'}}
                 onPress={()=>{
-                    this.props.doLogin(this.state.name);
-                    this.props.navigation.navigate("Home");
+                    if(this.state.name){
+                        this.props.doLogin(this.state.name);
+                        this.props.navigation.navigate("Home");
+                    }
+                    else{
+                        alert("Please provide your name");
+                    }
+
                 }}
                 >
                     <Text style={{color:"#ffffff"}}>Login</Text>
