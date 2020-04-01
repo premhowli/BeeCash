@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {Dimensions, FlatList, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { connect } from "react-redux";
-import {HomeFeed} from '../HomeFeed/HomeFeed';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import * as contentActions from '../../../redux/actions/contentActions';
 import theme from '../../../styles/theme';

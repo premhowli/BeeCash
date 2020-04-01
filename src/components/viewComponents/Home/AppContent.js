@@ -1,6 +1,5 @@
 import React from "react";
 import theme from "../../../styles/theme"
-import * as contentActions from "../../../redux/actions/contentActions";
 import {Text, View,Image,FlatList,ScrollView,TouchableOpacity, Dimensions} from 'react-native';
 import { connect } from "react-redux";
 import { TabView, SceneMap, TabViewAnimated } from 'react-native-tab-view';
@@ -19,7 +18,6 @@ import Login from '../User/index';
 
 AppRegistry.registerComponent(appName, () => gestureHandlerRootHOC(App));
 
-import HomeFeed from "../HomeFeed/HomeFeed";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -190,15 +188,6 @@ const height = Dimensions.get("window").height;
 
 
 
-const FirstRoute = () => (
-    <View style={[{height:height-50,width:width}, { backgroundColor: '#ff4081' }]} />
-);
-
-const SecondRoute = () => (
-    <View style={[{height:height-50,width:width}, { backgroundColor: '#673ab7' }]} >
-        <HomeFeed />
-    </View>
-);
 
 const initialLayout = { width: Dimensions.get('window').width };
 
