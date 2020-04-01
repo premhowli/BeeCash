@@ -69,57 +69,57 @@ export const getAllEvent = (dispatch) => {
                 },
                 {
                     "id": 5,
-                    "name": "Wine tasting",
-                    "location" : "Links Brewery",
+                    "name": "Startups Meet",
+                    "location" : "Kanteerava Indoor",
                     isPaid:true,
-                    price:"1200",
+                    price:"2199",
                     "imageUrl": "https://images.unsplash.com/photo-1585550135891-7c2a08e3655c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2734&q=80"
                 },
                 {
                     "id": 6,
-                    "name": "Wine tasting",
-                    "location" : "Links Brewery",
+                    "name": "Summer Noon Party",
+                    "location" : "Kumara Park",
                     isPaid:true,
-                    price:"1200",
+                    price:"3200",
                     "imageUrl": "https://images.unsplash.com/photo-1585511479991-1e45e025db0a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"
                 },
                 {
                     "id": 7,
-                    "name": "Wine tasting",
-                    "location" : "Links Brewery",
+                    "name": "Rock and Roll nights",
+                    "location" : "Sarjapur Road",
                     isPaid:true,
-                    price:"1200",
+                    price:"800",
                     "imageUrl": "https://images.unsplash.com/photo-1585513428101-556b579cade8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"
                 },
                 {
                     "id": 8,
-                    "name": "Wine tasting",
-                    "location" : "Links Brewery",
+                    "name": "Barbecue Fridays",
+                    "location" : "Whitefield",
                     isPaid:true,
-                    price:"1200",
+                    price:"999",
                     "imageUrl": "https://images.unsplash.com/photo-1585528061625-8b7bb0c543de?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"
                 },
                 {
                     "id": 9,
-                    "name": "Wine tasting",
-                    "location" : "Links Brewery",
-                    isPaid:true,
-                    price:"1200",
+                    "name": "Summer workshop",
+                    "location" : "Indiranagar",
+                    isPaid:false,
+                    price:"1299",
                     "imageUrl": "https://images.unsplash.com/photo-1585412727339-54e4bae3bbf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
                 },
                 {
                     "id": 10,
-                    "name": "Wine tasting",
-                    "location" : "Links Brewery",
-                    isPaid:true,
+                    "name": "Impressions & Expressions",
+                    "location" : "MG Road",
+                    isPaid:false,
                     price:"1200",
                     "imageUrl": "https://images.unsplash.com/photo-1585419062137-acaf0c8aeb13?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"
                 },
                 {
                     "id": 11,
-                    "name": "Wine tasting",
-                    "location" : "Links Brewery",
-                    isPaid:true,
+                    "name": "Italian carnival",
+                    "location" : "Electronic City",
+                    isPaid:false,
                     price:"1200",
                     "imageUrl": "https://images.unsplash.com/photo-1585520523655-ccd7931e09e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
                 }

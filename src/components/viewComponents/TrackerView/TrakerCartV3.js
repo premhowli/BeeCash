@@ -546,7 +546,7 @@ class RecycleTestComponent extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        dataProvider:state.contentReducer.content,
+        dataProvider:state.contentReducer.contentDataStore[state.contentReducer.currentLoggedInUser],
         viewType : state.contentReducer.viewType,
         dragging : state.contentReducer.dragging,
         draggingIdx : state.contentReducer.draggingIdx,

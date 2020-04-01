@@ -98,6 +98,8 @@ class Home extends Component{
 
     _renderRows = ({item, index, separators})=>{
 
+        const data = this.state.allEvent;
+
         if(this.state.showList){
             return(
                 <CellContainer>
@@ -139,13 +141,31 @@ class Home extends Component{
                             borderBottomRightRadius:5,
 
                         }}>
-                            <View style={{padding:10}}>
-                                <Text style={{color:'#000068',fontWeight: 'bold'}}>
+                            <View style={{padding:10,
+                                height:"100%",
+                                flexDirection:'row',
+                                }}>
+                                <View style={{flex:3}}>
+                                <Text style={{color:'#000068',fontSize:20,fontWeight: 'bold'}}>
                                     {item.name}
                                 </Text>
                                 <Text style={{color:'#323028'}}>
                                     {item.location}
                                 </Text>
+                                    <Text style={{marginTop:5,color:'#323028'}}>
+                                        {"One Liner description"}
+                                    </Text>
+                                </View>
+                                <View style={{postion:'absotute',right:0,
+
+                                    justifyContent:'center',
+                                    alignItems:'flex-end',
+                                    }}>
+                                    <Text style={{
+                                        fontWeight:'bold',
+                                        color:'#000068',
+                                        fontSize:20}}>{item.isPaid?"₹"+item.price:"Free"}</Text>
+                                </View>
                             </View>
                         </View>
 
@@ -154,13 +174,119 @@ class Home extends Component{
             )
         }
         else{
+            if(index%2!=0){
+                return;
+            }
+            else{
             return(
-                <View style={{justifyContent:'center',marginBottom:10}}>
-                    <Text style={{backgroundColor:'green',color:'white',padding:10,width:Dimensions.get('window').width}}>
-                        {item.name}
-                    </Text>
-                </View>
-            )
+                <CellContainer>
+                    <View style={{width:this.screenWidth,flexDirection:'row',justifyContent:(data[index] && data[index+1])?'space-around':'center'}}>
+                        {
+                            data[index]?
+                                <TouchableOpacity style={{
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    marginBottom:10,
+                                    height:this.screenHeight*0.3,
+                                    width:this.screenWidth*0.45,
+                                    borderRadius:5,
+                                    elevation:5,
+                                    backgroundColor:theme.colors.tileColor}}
+
+                                                  onPress={()=>{
+                                                      this.props.navigation.navigate('Cart',{
+                                                          id : data[index].id
+
+                                                      })
+                                                  }}
+                                >
+
+
+                                    <CustomCachedImage
+                                        component={Image}
+                                        source={{ uri: data[index].imageUrl }}
+                                        // indicator={}
+                                        imageStyle={{
+                                            borderRadius:5
+                                        }}
+                                        style={
+                                            {
+                                                height:"100%",width:"100%",
+                                                borderTopRightRadius:5
+                                            }
+                                        }>
+                                        <View style={{flex:1,backgroundColor:"#00000077",borderRadius:5,padding:10,justifyContent:'flex-end',
+                                        alignItems:'flex-start'}}>
+                                        <Text style={{color:'#ffffff',
+                                            fontSize:20,
+                                            fontWeight:'bold'
+                                        }}>
+                                            {data[index].name}
+                                        </Text>
+                                        </View>
+                                    </CustomCachedImage>
+
+                                </TouchableOpacity>
+                                :
+                                <View/>
+
+                        }
+                        {
+                            data[index+1] ?
+                                <TouchableOpacity style={{
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    marginBottom:10,
+                                    height:this.screenHeight*0.3,
+                                    width:this.screenWidth*0.45,
+                                    borderRadius:5,
+                                    elevation:5,
+                                    backgroundColor:theme.colors.tileColor}}
+
+                                                  onPress={()=>{
+                                                      this.props.navigation.navigate('Cart',{
+                                                          id : data[index+1].id
+
+                                                      })
+                                                  }}
+                                >
+
+
+                                    <CustomCachedImage
+                                        component={Image}
+                                        source={{ uri: data[index+1].imageUrl }}
+                                        // indicator={}
+                                        imageStyle={{
+                                            borderRadius:5
+                                        }}
+                                        style={
+                                            {
+                                                height:"100%",width:"100%",
+                                                borderTopRightRadius:5
+                                            }
+                                        }>
+                                        <View style={{flex:1,backgroundColor:"#00000077",borderRadius:5,padding:10,justifyContent:'flex-end',
+                                            alignItems:'flex-start'}}>
+                                            <Text style={{color:'#ffffff',
+                                                fontSize:20,
+                                                fontWeight:'bold'
+                                            }}>
+                                                {data[index+1].name}
+                                            </Text>
+                                        </View>
+                                    </CustomCachedImage>
+
+                                </TouchableOpacity>
+                                :
+                                <View/>
+
+                        }
+
+
+                    </View>
+
+                </CellContainer>
+            )}
         }
     };
 
@@ -228,7 +354,7 @@ class Home extends Component{
                 </View>
                 <View style={{height:this.screenHeight-50}}>
                     {
-                        this.state.showList ?
+
                             <View
                                 style={{
                                     height:this.screenHeight-50,
@@ -241,7 +367,7 @@ class Home extends Component{
                                             style={{marginTop:10,
                                                 backgroundColor:theme.colors.backgroundColor,
                                                 width:this.screenWidth}}
-                                            contentContainerStyle={{alignItems:'center'}}
+                                            contentContainerStyle={{alignItems:'center',paddingBottom:80}}
                                             data={this.state.allEvent}
                                             renderItem={this._renderRows}
                                             keyExtractor={(item)=>{
@@ -251,16 +377,13 @@ class Home extends Component{
                                         :
                                         <View>
                                             <Text>
-                                                hello
+                                                No events available right now!!
                                             </Text>
                                         </View>
                                 }
 
                             </View>
-                            :
-                            <View style={{height:this.screenHeight-50,width:this.screenWidth,backgroundColor:"red"}}>
-                                <Text>hello</Text>
-                            </View>
+
 
                     }
                 </View>

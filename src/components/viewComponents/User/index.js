@@ -41,6 +41,7 @@ class Login extends React.Component {
                         backgroundColor:theme.colors.statusBarColor,
                         alignItems:'center'}}
                 onPress={()=>{
+                    this.props.doLogin(this.state.name);
                     this.props.navigation.navigate("Home");
                 }}
                 >
@@ -63,8 +64,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 
     return {
-        doLogin:(id)=>{
-            contentActions
+        doLogin:(name)=>{
+            contentActions.doLogin(name,dispatch)
             //.fetchEventDetails(id,dispatch)
         }
     };

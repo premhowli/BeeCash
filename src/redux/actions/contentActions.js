@@ -176,7 +176,6 @@ export const addItemToTracker = (item,dispatch) => {
 }
 
 export const doLogin = (name,dispatch) => {
-    if(1)
     dispatch(
         {
             type : DO_LOGIN,

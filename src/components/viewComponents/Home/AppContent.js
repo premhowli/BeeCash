@@ -311,8 +311,8 @@ class AppContent extends React.Component {
 
     static getDerivedStateFromProps(nextProp, prevState) {
         return {
-            content : nextProp.content !== prevState.content ? nextProp.content : prevState.content,
-            viewType: nextProp.viewType !== prevState.viewType ? nextProp.viewType : prevState.viewType
+            //content : nextProp.content !== prevState.content ? nextProp.content : prevState.content,
+            //viewType: nextProp.viewType !== prevState.viewType ? nextProp.viewType : prevState.viewType
         }
     }
     render(){
@@ -335,8 +335,8 @@ class AppContent extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        content:state.contentReducer.allContent,
-        viewType : state.contentReducer.viewType
+        //content:state.contentReducer.allContent,
+        //viewType : state.contentReducer.viewType
     };
 };
 
