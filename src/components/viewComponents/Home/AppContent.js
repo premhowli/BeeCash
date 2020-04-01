@@ -40,6 +40,8 @@ AppRegistry.registerComponent(appName, () => gestureHandlerRootHOC(App));
 import Example from '../TrackerView/example'
 
 import HomeFeed from "../HomeFeed/HomeFeed";
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 
 
@@ -108,8 +110,25 @@ const CartStack = createStackNavigator(
 
 
 const tabRootStack = createMaterialTopTabNavigator({
-        Home: RootStack,
-        Cart : CartStack,
+        Home: {
+            screen:RootStack,
+            navigationOptions: {
+                tabBarLabel:"Home",
+                tabBarIcon: ({focused, tintColor }) => (
+                    <AntDesign name="home" size={20} color={tintColor?tintColor:"#000000"}/>
+                )
+            },
+        },
+        Cart :{
+            screen:CartStack,
+            navigationOptions: {
+                tabBarLabel:"Home",
+                tabBarIcon: ({focused, tintColor }) => (
+                    <SimpleLineIcons name="location-pin" size={20} color={tintColor?tintColor:"#000000"}/>
+                )
+            }
+        } ,
+
         // Details : RootStack
     },
     {
@@ -118,9 +137,24 @@ const tabRootStack = createMaterialTopTabNavigator({
         lazy:true,
         headerMode: 'none',
         tabBarPosition:'bottom',
+        showLabel:false,
         defaultNavigationOptions: {
             ...TransitionPresets.SlideFromRightIOS,
         },
+        tabBarOptions:{
+            showLabel:false,
+            showIcon:true,
+            activeTintColor:theme.colors.statusBarColor,
+            inactiveTintColor:"#000000",
+            style:{
+                backgroundColor:"#ffffff",
+
+            },
+            indicatorStyle: {
+                backgroundColor: theme.colors.statusBarColor,
+                top: 0,
+            }
+        }
     }
 );
 

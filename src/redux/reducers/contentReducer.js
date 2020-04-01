@@ -115,11 +115,6 @@ const contentReducer = (state = initialState, action) => {
       break;
       case ADD_ITEM_TO_TRACKER :{
           let item = action.payload.item;
-          console.log("<< = "+JSON.stringify(state.contentDataStore));
-          console.log("<< = 1 "+JSON.stringify(state.contentDataStore[state.currentLoggedInUser]));
-          console.log("<< = 1 "+JSON.stringify(state.contentDataStore[state.currentLoggedInUser].filter(data=>{
-              return(data.id===item.id)
-          })));
           if(state.contentDataStore[state.currentLoggedInUser]
 
               && state.contentDataStore[state.currentLoggedInUser].filter(data=>{
@@ -128,6 +123,7 @@ const contentReducer = (state = initialState, action) => {
              return{
                  ...state,
                  contentDataStore:{
+                     ...state.contentDataStore,
                      [state.currentLoggedInUser]:[
                          ...state.contentDataStore[state.currentLoggedInUser],
                          item

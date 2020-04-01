@@ -10,7 +10,6 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as contentActions from '../../../redux/actions/contentActions';
 import { connect } from "react-redux";
-import {HomeFeed} from '../HomeFeed/HomeFeed';
 
 const ViewTypes = {
     FULL: 0,
@@ -52,8 +51,6 @@ const immutableMove = (arr, from, to) => {
         return prev;
     }, []);
 }
-const colorMap = {};
-
 const dataProvider = new DataProvider((r1, r2) => {
     return r1 !== r2;
 });
@@ -72,7 +69,6 @@ class RecycleTestComponent extends React.Component {
             content:[],
             draggingIdx:-1,
             dragging:false,
-            //content: props.content
         }
 
         let { width } = Dimensions.get("window");
@@ -87,19 +83,6 @@ class RecycleTestComponent extends React.Component {
         ]);
 
         this.y = add(this.offY, new Value(-this.rowHeight / 2));
-
-
-
-        //Create the data provider and provide method which takes in two rows of data and return if those two are different or not.
-        //THIS IS VERY IMPORTANT, FORGET PERFORMANCE IF THIS IS MESSED UP
-
-
-        //Create the layout provider
-        //First method: Given an index return the type of item e.g ListItemType1, ListItemType2 in case you have variety of items in your list/grid
-        //Second: Given a type and object set the exact height and width for that type on given object, if you're using non deterministic rendering provide close estimates
-        //If you need data based check you can access your data provider here
-        //You'll need data in most cases, we don't provide it by default to enable things like data virtualization in the future
-        //NOTE: For complex lists LayoutProvider will also be complex it would then make sense to move it to a different file
         this._layoutProvider = new LayoutProvider(
             index => {
                 return ViewTypes.FULL;
@@ -113,7 +96,6 @@ class RecycleTestComponent extends React.Component {
     }
 
     componentDidMount(){
-        //this.props.getCon();
         if(!this.state.dataProvider){
             this.props.getCon();
         }
@@ -121,35 +103,9 @@ class RecycleTestComponent extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProp, prevState) {
-        console.log("<<<< leh bal 1 "+prevState.content);
-        //console.log("<<<< leh bal 2 "+nextProp.dataProvider);
-
-
         if(!nextProp.dataProvider){
            return;
         }
-
-        try{
-            dataProvider.cloneWithRows(nextProp.dataProvider);
-            //console.log("<<<< leh bal 2 "+nextProp.dataProvider);
-
-        }
-        catch(e){
-            console.log("<<<< leh bal 20 exception = "+e.message)
-        }
-
-        try{
-            dataProvider.cloneWithRows(prevState.dataProvider)
-            console.log("<<<< leh bal 3 "+prevState.dataProvider);
-        }
-        catch(e){
-            console.log("<<<< leh bal 3 exception = "+e.message)
-        }
-
-
-
-
-
         return {
             dataProvider : dataProvider.cloneWithRows(nextProp.dataProvider) !== dataProvider.cloneWithRows(prevState.dataProvider)
                 ? dataProvider.cloneWithRows(nextProp.dataProvider) : dataProvider.cloneWithRows(prevState.dataProvider),
@@ -159,19 +115,6 @@ class RecycleTestComponent extends React.Component {
 
     }
 
-
-
-
-
-
-
-    _generateArray(n) {
-        let arr = new Array(n);
-        for (let i = 0; i < n; i++) {
-            arr[i] = {id:i,name:'bal'};
-        }
-        return arr;
-    }
 
     //Given type and data return the view component
     _rowRenderer = (type, data, index, _, nope)=> {
@@ -192,17 +135,12 @@ class RecycleTestComponent extends React.Component {
                     // opacity: !nope && index ===this.state.draggingIdx ? 0 : 1
                 }}
                     onPress={()=>{
-                        console.log("<<<< dudu");
-                        this.props.navigation.navigate('Details');
+                        this.props.navigation.navigate('Details',{
+                            id : data.id
+
+                        });
                     }}
-
-
-
-
-
                 >
-
-
                     <View style={{flex:7,flexDirection:'row'}}>
                         <CustomCachedImage
                             component={Image}
@@ -217,27 +155,34 @@ class RecycleTestComponent extends React.Component {
                                     borderTopRightRadius:5
                                 }
                             }>
-                            <TouchableOpacity style={{position:'absolute',
-                                right:5,
-                                top:5,
-                                width:40,
-                                height:40,
-                                borderRadius:25,
-                                backgroundColor:'#000000aa',
+                            {
+                                nope ?
+                                    <View/>
+                                    :
+                                    <TouchableOpacity style={{position:'absolute',
+                                        right:5,
+                                        top:5,
+                                        width:40,
+                                        height:40,
+                                        borderRadius:25,
+                                        backgroundColor:'#000000aa',
 
-                                justifyContent:'center',
-                                alignItems:'center'
-                                }}
-                                onPress={()=>{
-                                    this.props.deleteItem(data.id);
-                                }}
-                            >
+                                        justifyContent:'center',
+                                        alignItems:'center'
+                                    }}
+                                                      onPress={()=>{
+                                                          this.props.deleteItem(data.id);
+                                                      }}
+                                    >
 
-                            <MaterialCommunityIcons color={"#ffffff"} name={'delete'} size={25} />
-                            </TouchableOpacity>
+                                        <MaterialCommunityIcons color={"#ffffff"} name={'delete'} size={25} />
+                                    </TouchableOpacity>
+
+
+                            }
+
 
                         </CustomCachedImage>
-                        {/*<Text style={{ fontSize: 32 }}> {data.name}</Text>*/}
                     </View>
                     <View style={{flex:3,height:'100%',width:"100%"}}>
 
@@ -249,35 +194,49 @@ class RecycleTestComponent extends React.Component {
                                 borderBottomLeftRadius:5,
                                 justifyContent:'space-between'}}>
                                 <View style={{flex:1,paddingLeft:10,justifyContent:'center'}}>
-                                <Text>{data.location}</Text>
+                                    {
+                                        nope?
+                                            <View/>
+                                            :
+                                            <Text>{data.location}</Text>
+                                    }
+
                                 </View>
-                            <View style={{flexDirection:'row',
-                                position:'absolute',
-                                right:5,
-                                justifyContent:'flex-end',
-                                alignItems:'center'}}>
-                            <PanGestureHandler
-                                maxPointers={1}
-                                onGestureEvent={this.onGestureEvent}
-                                onHandlerStateChange={this.onGestureEvent}
-                            >
-                                <Animated.View style={{
-                                    height:'100%',
-                                    borderRadius:5,
-                                }}>
-                                    <View style={{flex:1,
-                                        borderBottomRightRadius:5,
-                                        justifyContent:'center',
-                                        width:40,
-                                        alignItems:'center'}}>
-                                        <FontAwesome5 name={'grip-lines'} size={25} />
-                                    </View>
+                                {
+                                    nope ?
+                                        <View/>
+                                        :
+                                        <View style={{flexDirection:'row',
+                                            position:'absolute',
+                                            right:5,
+                                            justifyContent:'flex-end',
+                                            alignItems:'center'}}
+                                        >
+                                            <PanGestureHandler
+                                                maxPointers={1}
+                                                onGestureEvent={this.onGestureEvent}
+                                                onHandlerStateChange={this.onGestureEvent}
+                                            >
+                                                <Animated.View style={{
+                                                    height:'100%',
+                                                    borderRadius:5,
+                                                }}>
+                                                    <View style={{flex:1,
+                                                        borderBottomRightRadius:5,
+                                                        justifyContent:'center',
+                                                        width:40,
+                                                        alignItems:'center'}}>
+                                                        <FontAwesome5 name={'grip-lines'} size={25} />
+                                                    </View>
 
 
-                                </Animated.View>
+                                                </Animated.View>
 
-                            </PanGestureHandler>
-                            </View>
+                                            </PanGestureHandler>
+                                        </View>
+
+                                }
+
                             </View>
 
 
@@ -444,10 +403,6 @@ class RecycleTestComponent extends React.Component {
 
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={{ flex: 1 }}>
-
-
-
-
                     {
                         dataProvider ?
                         <View style={{ flex: 1 }}>
@@ -582,11 +537,6 @@ const mapDispatchToProps = (dispatch) => {
         deleteItem:(id)=>{
             contentActions.deleteItemFromTracker(id,dispatch)
         }
-
-        // getDummyData:()=>{
-        //     console.log("DP called");
-        //     contentActions.getAllContent(1,dispatch);
-       // }
     };
 };
 
