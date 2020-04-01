@@ -10,9 +10,9 @@ import Home from './Home'
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler'
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator, TransitionPresets } from 'react-navigation-stack';
-import TrackerCart from '../TrackerView/Details';
+import Details from '../TrackerView/Details';
 import { createBottomTabNavigator,createMaterialTopTabNavigator } from 'react-navigation-tabs';
-import TrackerCart2 from '../TrackerView/Tracker';
+import Tracker from '../TrackerView/Tracker';
 import Login from '../User/index';
 
 
@@ -23,12 +23,6 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 
 
-const Component = () => {
-    return (
-        <View><Text>hello</Text></View>
-    );
-}
-
 const RootStack = createStackNavigator(
     {
         Home: {
@@ -38,7 +32,7 @@ const RootStack = createStackNavigator(
             },
         },
         Cart:{
-            screen:TrackerCart,
+            screen:Details,
             navigationOptions: {
                 header: null,
             },
@@ -63,13 +57,13 @@ const RootStack = createStackNavigator(
 const CartStack = createStackNavigator(
     {
         Track: {
-            screen:TrackerCart2,
+            screen:Tracker,
             navigationOptions: {
                 header: null,
             },
         },
         Details:{
-            screen:TrackerCart,
+            screen:Details,
             navigationOptions: {
                 header: null,
             },
@@ -165,30 +159,6 @@ const AppContainer = createAppContainer(globalStack);
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
-
-// const MySwitch = createAnimatedSwitchNavigator(
-//     {
-//         Home: HomeFeed,
-//
-//     },
-//     {
-//         // The previous screen will slide to the bottom while the next screen will fade in
-//         transition: (
-//             <Transition.Together>
-//                 <Transition.Out
-//                     type="slide-bottom"
-//                     durationMs={400}
-//                     interpolation="easeIn"
-//                 />
-//                 <Transition.In type="fade" durationMs={500} />
-//             </Transition.Together>
-//         ),
-//     }
-// );
-
-
-
-
 const initialLayout = { width: Dimensions.get('window').width };
 
 const LazyPlaceholder = ({ route }) => (
@@ -204,26 +174,6 @@ class AppContent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            FlatListItems: [
-                {name:'Patrick star'},
-                {name:'Gallileo'},
-                {name:'Einsten'},
-                {name:'Peterson'},
-                {name:'Schwarzenneger'},
-                {name:'Dostoyevsky'},
-                {name:'Patrick star'},
-                {name:'Gallileo'},
-                {name:'Einsten'},
-                {name:'Peterson'},
-                {name:'Schwarzenneger'},
-                {name:'Dostoyevsky'},
-                {name:'Patrick star'},
-                {name:'Gallileo'},
-                {name:'Einsten'},
-                {name:'Peterson'},
-                {name:'Schwarzenneger'},
-                {name:'Dostoyevsky'}
-                ],
             showList:true,
             backgroundColor:"red",
             index: 0,
@@ -247,75 +197,16 @@ class AppContent extends React.Component {
         );
     };
 
-    // static getDerivedStateFromProps(nextProp, prevState) {
-    //     return {
-    //         // examID: nextProp.navigation.state.params.id
-    //         viewType: nextProp.viewType !== prevState.viewType ? nextProp.viewType : prevState.viewType
-    //     }
-    //
-    // }
-
-    _handleIndexChange = index => this.setState({ index });
-
-    _renderLazyPlaceholder = ({ route }) => <LazyPlaceholder route={route} />;
 
     componentDidMount(){
         this.props.getDummyData(this.state.page);
     }
-    _renderTab = props => {
-        //const inputRange = props.navigationState.routes.map((x, i) => i);
-
-        return (
-            <View>
-            </View>
-
-        );
-    };
-
-    _renderScene = ({ route }) => {
-        switch (route.key) {
-            case '1':
-                return <View style={{ flex: 1, backgroundColor: '#ff4081' }} />;
-            case '2':
-                return <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
-            default:
-                return null;
-        }
-    };
 
 
-    _renderRows = ({item, index, separators})=>{
-
-        if(this.state.showList){
-            console.log("e bhai true to");
-            return(
-                <View style={{justifyContent:'center',marginBottom:10}}>
-                    <Text style={{backgroundColor:'blue',color:'white',padding:10,width:Dimensions.get('window').width}}>
-                        {item.name}
-                    </Text>
-                </View>
-            )
-        }
-        else{
-            console.log("e bhai false to");
-            return(
-                <View style={{justifyContent:'center',marginBottom:10}}>
-                    <Text style={{backgroundColor:'green',color:'white',padding:10,width:Dimensions.get('window').width}}>
-                        {item.name}
-                    </Text>
-                </View>
-            )
-        }
-        };
-
-
-    onMomentumScrollBegin = () => { this.onEndReachedCalledDuringMomentum = false; }
 
 
     static getDerivedStateFromProps(nextProp, prevState) {
         return {
-            //content : nextProp.content !== prevState.content ? nextProp.content : prevState.content,
-            //viewType: nextProp.viewType !== prevState.viewType ? nextProp.viewType : prevState.viewType
         }
     }
     render(){
@@ -323,14 +214,7 @@ class AppContent extends React.Component {
             velocityThreshold: 0,
             directionalOffsetThreshold: 80
         };
-
-        console.log("asd leh answer "+this.state.showList);
-        console.log("<<<< chicku  = "+this.state.viewType );
-
-
         return (
-
-
             <AppContainer />
         );
     }
@@ -338,8 +222,6 @@ class AppContent extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        //content:state.contentReducer.allContent,
-        //viewType : state.contentReducer.viewType
     };
 };
 
@@ -348,12 +230,8 @@ const mapDispatchToProps = (dispatch) => {
 
     return {
         getDummyData:()=>{
-            console.log("DP called");
-            //contentActions.getAllContent(1,dispatch);
+
         },
-        // changeViewType:(type)=>{
-        //     contentActions.changeViewType(type,dispatch);
-        // }
     };
 };
 

@@ -81,9 +81,21 @@ export class TrackerCart extends React.Component {
                                 >
                                     <MaterialCommunityIcons name={'arrow-left'} size={30} color={'#ffffff'}/>
                                 </TouchableOpacity>
+                                <View style={{position:'absolute',
+                                    right:0,
+                                    bottom:0,
+                                    height:40,
+                                    backgroundColor:'#00000077',
+                                    borderTopLeftRadius:10,
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    minWidth:100}}>
+                                    <Text style={{color:"#ffffff",fontSize:20,fontWeight:'bold'}}>{eventDetails.isPaid?"₹"+eventDetails.price:"Free"}</Text>
+
+                                </View>
                             </CustomCachedImage>
                             <View style={{width:"100%",
-                                height:60,
+                                minHeight:60,
                                 paddingHorizontal:10,
                                 alignItems:"flex-start",
                                 justifyContent:'flex-end'}}>

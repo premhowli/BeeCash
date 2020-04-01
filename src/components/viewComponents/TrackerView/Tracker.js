@@ -72,6 +72,7 @@ class RecycleTestComponent extends React.Component {
         }
 
         let { width } = Dimensions.get("window");
+        let { height } = Dimensions.get("window");
 
         this.onGestureEvent = event([
             {
@@ -261,14 +262,8 @@ class RecycleTestComponent extends React.Component {
     scrolling = false;
 
     start = ([y]) => {
-        console.log("<<<< num 1 = "+JSON.stringify(this.currIdx));
         this.currIdx = this.yToIndex(y);
-        // console.log("<<<< num 1");
-        //console.log("<<<< choco 1 = "+this.currIdx);
-
         this.props.changeDragValues(true,this.currIdx);
-
-        //this.setState({ dragging: true, draggingIdx: this.currIdx });
     };
 
     yToIndex = (y: number) =>
@@ -284,37 +279,10 @@ class RecycleTestComponent extends React.Component {
     list = React.createRef();
 
     reset = ([y]) => {
-        // console.log("<<<<<< bal 4 ="+JSON.stringify(this.state.dataProvider.getAllData()));
-        // console.log("<<<< num 2");
-        //this.props.changeData(this.state.dataProvider.getAllData());
-
 
         this.props.changeAllValues(false,-1,this.state.dataProvider.getAllData());
-
-
-        // this.setState((prevState)=>{
-        //  //console.log("<<<<<< bal 6 = "+JSON.stringify(this.state.dataProvider.getAllData()));
-        //     return(
-        //         {
-        //             dataProvider: this.state.dataProvider.cloneWithRows(
-        //                 this.state.dataProvider.getAllData()
-        //             ),
-        //             dragging: false,
-        //             draggingIdx: -1,
-        //         });
-        // },()=>{
-        //     console.log("<<<<<< bal 6 2 = "+JSON.stringify(this.state.dataProvider.getAllData()));
-        //     this.props.changeData(
-        //         this.state.dataProvider.getAllData()
-        //     );
-        // });
-
-        // this.props.changeData(
-        //     this.state.dataProvider.getAllData()
-        // );
         this.scrolling = false;
 
-        //this.updateOrder(y);
     };
 
     moveList = amount => {
@@ -353,14 +321,7 @@ class RecycleTestComponent extends React.Component {
 
     updateOrder = y => {
         const newIdx = this.yToIndex(y);
-//console.log("<<<<<< bal 6 newIdx ="+newIdx+" this.currIdx = "+this.currIdx+" draggingIdx = "+this.state.draggingIdx)
         if (this.currIdx !== newIdx) {
-
-            // this.props.changeData(
-            //
-            // );
-            // this.props.changeDraggingIdx(newIdx);
-
 
             this.props.changeForMove(newIdx,immutableMove(
                 this.state.dataProvider.getAllData(),
@@ -369,19 +330,7 @@ class RecycleTestComponent extends React.Component {
             ));
             this.currIdx = newIdx;
 
-            // this.setState({
-            //     dataProvider: this.state.dataProvider.cloneWithRows(
-            //         immutableMove(
-            //             this.state.dataProvider.getAllData(),
-            //             this.currIdx,
-            //             newIdx
-            //         )
-            //     ),
-            //     draggingIdx: newIdx
-            // });
-
         }
-        console.log("<<<< num 4");
     };
 
 
@@ -389,8 +338,6 @@ class RecycleTestComponent extends React.Component {
 
     render() {
         const { dragging, dataProvider, draggingIdx } = this.state;
-        console.log("<<<<<< bal = "+JSON.stringify(this.state.dataProvider));
-        console.log("<<<<<< bal 3 = "+draggingIdx);
         let e=0;
         if(draggingIdx != -1){
             e=2;
@@ -398,9 +345,7 @@ class RecycleTestComponent extends React.Component {
         else{
             e=3;
         }
-
         return(
-
             <SafeAreaView style={{ flex: 1 }}>
                 <View style={{ flex: 1 }}>
                     {
@@ -541,24 +486,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecycleTestComponent);
-const styles = {
-    container: {
-        justifyContent: "space-around",
-        alignItems: "center",
-        flex: 1,
-
-        backgroundColor: "#00a1f1"
-    },
-    containerGridLeft: {
-        justifyContent: "space-around",
-        alignItems: "center",
-        flex: 1,
-        backgroundColor: "#ffbb00"
-    },
-    containerGridRight: {
-        justifyContent: "space-around",
-        alignItems: "center",
-        flex: 1,
-        backgroundColor: "#7cbb00"
-    }
-};

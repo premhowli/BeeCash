@@ -52,12 +52,13 @@ class Home extends Component{
 
     _renderRows = ({item, index, separators})=>{
 
+
         const data = this.state.allEvent;
 
         if(this.state.showList){
             return(
                 <CellContainer>
-                    <TouchableOpacity style={{
+                    <TouchableOpacity  style={{
                         justifyContent:'center',
                         alignItems:'center',
                         marginBottom:10,
@@ -106,9 +107,6 @@ class Home extends Component{
                                 <Text style={{color:'#323028'}}>
                                     {item.location}
                                 </Text>
-                                    <Text style={{marginTop:5,color:'#323028'}}>
-                                        {"One Liner description"}
-                                    </Text>
                                 </View>
                                 <View style={{postion:'absotute',right:0,
 
@@ -321,9 +319,6 @@ class Home extends Component{
                                             contentContainerStyle={{alignItems:'center',paddingBottom:80}}
                                             data={this.state.allEvent}
                                             renderItem={this._renderRows}
-                                            keyExtractor={(item)=>{
-                                                item.id;
-                                            }}
                                         />
                                         :
                                         <View>
